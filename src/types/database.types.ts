@@ -1,3 +1,10 @@
+/**
+ * Database contract shared by every feature.
+ *
+ * NOTE: `@supabase/postgrest-js` requires each table to expose a
+ * `Relationships` array. They are currently empty; regenerate this file with
+ * `supabase gen types` to populate real foreign-key metadata.
+ */
 export type Json =
   | string
   | number
@@ -45,6 +52,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       customers: {
         Row: {
@@ -89,6 +97,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       products: {
         Row: {
@@ -121,6 +130,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       product_variants: {
         Row: {
@@ -156,6 +166,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       plans: {
         Row: {
@@ -203,6 +214,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       plan_items: {
         Row: {
@@ -235,6 +247,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       discounts: {
         Row: {
@@ -282,6 +295,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       tax_rates: {
         Row: {
@@ -320,6 +334,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
     };
     Views: Record<string, never>;

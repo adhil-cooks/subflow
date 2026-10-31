@@ -93,7 +93,7 @@ function readAddress(formData: FormData, prefix: "billing" | "shipping") {
   const address: Record<string, FormDataEntryValue | null> = {}
 
   for (const field of ADDRESS_FIELDS) {
-    address[field] = formData.get(`${prefix}_${field}`)
+    address[field] = formData.get(`${prefix}_${field}`) ?? ""
   }
 
   return address

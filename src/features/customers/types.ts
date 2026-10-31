@@ -1,21 +1,38 @@
 /**
  * Customer domain types.
  *
- * These mirror the agreed contract for `public.customers` documented by
- * Arrow (the database owner). They are feature-local for now because
- * `@/types/database.types` is not on `main` yet.
- *
- * Once that file lands, `Customer` should become:
- *
- *   type Customer = Database["public"]["Tables"]["customers"]["Row"]
- *
- * so the database stays the single source of truth. Nothing else in the
- * feature should need to change.
+ * The database contract lives in `@/types/database.types` (owned by Arrow).
+ * Everything here derives from it so there is a single source of truth.
  */
 
-export const CUSTOMER_STATUSES = ["active", "inactive", "archived"] as const
+import type {
+  CustomerStatus,
+  Database,
+  Json,
+} from "@/types/database.types"
 
-export type CustomerStatus = (typeof CUSTOMER_STATUSES)[number]
+export type { CustomerStatus }
+
+export type Customer = Database["public"]["Tables"]["customers"]["Row"]
+export type CustomerInsert = Database["public"]["Tables"]["customers"]["Insert"]
+export type CustomerUpdate = Database["public"]["Tables"]["customers"]["Update"]
+
+/**
+ * Iteration order for status dropdowns and filters.
+ * `satisfies` keeps this in sync with the database enum at compile time.
+ */
+export const CUSTOMER_STATUSES = [
+  "active",
+  "inactive",
+  "archived",
+] as const satisfies readonly CustomerStatus[]
+
+export function isCustomerStatus(value: unknown): value is CustomerStatus {
+  return (
+    typeof value === "string" &&
+    (CUSTOMER_STATUSES as readonly string[]).includes(value)
+  )
+}
 
 /** Shape stored in the `billing_address` / `shipping_address` jsonb columns. */
 export type Address = {
@@ -27,17 +44,34 @@ export type Address = {
   country?: string
 }
 
-export type Customer = {
-  id: string
-  profile_id: string | null
-  name: string
-  email: string
-  phone: string | null
-  company: string | null
-  billing_address: Address
-  shipping_address: Address
-  status: CustomerStatus
-  created_by: string | null
-  created_at: string
-  updated_at: string
+function readAddressField(
+  source: Record<string, Json | undefined>,
+  key: keyof Address
+): string | undefined {
+  const value = source[key]
+
+  return typeof value === "string" && value.trim() !== "" ? value : undefined
+}
+
+/**
+ * Narrows a jsonb column to `Address`.
+ *
+ * The generated row type declares these columns as `Json`, and the database
+ * defaults them to `{}`, so the value may legitimately be empty or malformed.
+ */
+export function toAddress(value: Json | null | undefined): Address {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return {}
+  }
+
+  const source = value as Record<string, Json | undefined>
+
+  return {
+    line1: readAddressField(source, "line1"),
+    line2: readAddressField(source, "line2"),
+    city: readAddressField(source, "city"),
+    state: readAddressField(source, "state"),
+    postal_code: readAddressField(source, "postal_code"),
+    country: readAddressField(source, "country"),
+  }
 }

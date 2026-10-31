@@ -1,6 +1,5 @@
 import Link from "next/link"
 
-import { Badge } from "@/components/ui/badge"
 import {
   Table,
   TableBody,
@@ -10,27 +9,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import type { Customer, CustomerStatus } from "../types"
-
-/**
- * Temporary status rendering until Adhil's `@/components/shared/status-badge`
- * lands. Kept neutral on purpose: semantic status colours belong to that
- * shared component, not to this table.
- */
-const STATUS_VARIANTS: Record<
-  CustomerStatus,
-  "default" | "secondary" | "outline"
-> = {
-  active: "default",
-  inactive: "secondary",
-  archived: "outline",
-}
-
-const STATUS_LABELS: Record<CustomerStatus, string> = {
-  active: "Active",
-  inactive: "Inactive",
-  archived: "Archived",
-}
+import { CustomerStatusBadge } from "./customer-status-badge"
+import type { Customer } from "../types"
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "medium" })
 
@@ -70,9 +50,7 @@ export function CustomersTable({ customers }: { customers: Customer[] }) {
               {customer.email}
             </TableCell>
             <TableCell>
-              <Badge variant={STATUS_VARIANTS[customer.status]}>
-                {STATUS_LABELS[customer.status]}
-              </Badge>
+              <CustomerStatusBadge status={customer.status} />
             </TableCell>
             <TableCell className="hidden text-muted-foreground sm:table-cell">
               {formatDate(customer.created_at)}

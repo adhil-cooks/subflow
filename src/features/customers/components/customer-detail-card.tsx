@@ -2,7 +2,7 @@ import type { ReactNode } from "react"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-import type { Address, Customer } from "../types"
+import { toAddress, type Address, type Customer } from "../types"
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
   dateStyle: "medium",
@@ -87,11 +87,11 @@ export function CustomerDetailCard({ customer }: { customer: Customer }) {
         <CardContent className="space-y-6">
           <div className="space-y-2">
             <h3 className="text-sm font-medium">Billing</h3>
-            <AddressBlock address={customer.billing_address} />
+            <AddressBlock address={toAddress(customer.billing_address)} />
           </div>
           <div className="space-y-2 border-t border-border pt-4">
             <h3 className="text-sm font-medium">Shipping</h3>
-            <AddressBlock address={customer.shipping_address} />
+            <AddressBlock address={toAddress(customer.shipping_address)} />
           </div>
         </CardContent>
       </Card>

@@ -1,36 +1,152 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Subflow
+
+**Subscription Management Platform**
+
+Subflow is a subscription management application designed to help businesses manage customers, products, subscription plans, billing, invoices and payments from one place.
+
+## Project Overview
+
+The platform provides a centralized workspace for managing the subscription lifecycle, tracking payments and monitoring business performance.
+
+### Core Modules
+
+- Dashboard and business overview
+- Customer management
+- Product and product variant management
+- Subscription plan management
+- Subscription lifecycle management
+- Invoice generation and tracking
+- Payment recording and tracking
+- Reports and analytics
+- User roles and access control
+
+## Technology Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 App Router |
+| Language | TypeScript |
+| UI | Tailwind CSS v4 |
+| Components | shadcn/ui with Base UI |
+| Database | Supabase PostgreSQL |
+| Authentication | Supabase Auth |
+| Validation | Zod |
+| Charts | Recharts |
+| Icons | Lucide React |
+| Deployment | Vercel |
+
+## Project Structure
+
+```text
+subflow/
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   └── pull_request_template.md
+├── docs/
+├── tasks/
+├── public/
+├── src/
+│   ├── app/
+│   ├── components/
+│   │   └── ui/
+│   └── lib/
+├── .env.example
+├── AGENTS.md
+├── package.json
+└── README.md
+```
 
 ## Getting Started
 
-First, run the development server:
+### Requirements
+
+- Node.js 25
+- npm
+- Git
+- A Supabase project
+
+### Installation
+
+Clone the repository:
+
+```bash
+git clone YOUR_GITHUB_REPOSITORY_URL
+cd subflow
+```
+
+Install dependencies:
+
+```bash
+npm ci
+```
+
+Create a local environment file:
+
+```bash
+copy .env.example .env.local
+```
+
+Add the required Supabase credentials to `.env.local`.
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+See `.env.example` for the required variable names.
 
-## Learn More
+Never commit `.env.local` or expose service-role credentials and API secrets in client-side code.
 
-To learn more about Next.js, take a look at the following resources:
+## Development Guidelines
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Before contributing:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Read `AGENTS.md`.
+2. Read `docs/PROJECT.md`.
+3. Read `docs/UI_GUIDELINES.md` before UI development.
+4. Read `docs/GIT_WORKFLOW.md` before committing.
+5. Read your assigned task file in `tasks/`.
 
-## Deploy on Vercel
+## Team
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Member | Primary Responsibility |
+|---|---|
+| Adhil | Frontend integration and dashboard |
+| Adharsh | Frontend feature development |
+| Arrow | Backend foundation, database and authentication |
+| Arjun | Subscription and billing features |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Git Workflow
+
+- Work on feature branches.
+- Do not push directly to `main`.
+- Use conventional commit messages.
+- Open a Pull Request for every feature.
+- Run lint and production build before requesting review.
+
+See `docs/GIT_WORKFLOW.md`.
+
+## Quality Checks
+
+```bash
+npm run lint
+npm run build
+npm audit --omit=dev
+```
+
+## Deployment
+
+The application is intended to be deployed through Vercel. Configure the required environment variables in the Vercel project settings before deployment.
+
+## Project Status
+
+Initial project foundation and team development setup.
+
+---
+
+**Subflow — Subscription management, simplified.**

@@ -52,7 +52,15 @@ export async function listCustomers({
   return data ?? []
 }
 
+const UUID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
 export async function getCustomer(id: string): Promise<Customer | null> {
+  // PostgREST rejects malformed UUIDs; treat them as "not found" instead.
+  if (!UUID_PATTERN.test(id)) {
+    return null
+  }
+
   const supabase = await createClient()
 
   const { data, error } = await supabase

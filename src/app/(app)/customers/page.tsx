@@ -1,5 +1,6 @@
 import { Suspense } from "react"
 import Link from "next/link"
+import { connection } from "next/server"
 
 import { Button } from "@/components/ui/button"
 
@@ -49,6 +50,11 @@ async function CustomersContent({
   searchParams: SearchParams
 }) {
   const params = await searchParams
+
+  // Supabase reads the session cookie, which computes an expiry with
+  // `Date.now()`; make the request-time boundary explicit for PPR.
+  await connection()
+
   const q = typeof params.q === "string" ? params.q.trim() : ""
   const statusParam = typeof params.status === "string" ? params.status : "all"
   const status: CustomerStatus | undefined = isCustomerStatus(statusParam)

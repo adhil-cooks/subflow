@@ -9,12 +9,26 @@ import { CUSTOMER_STATUSES } from "./types"
 function optionalText(max: number, label: string) {
   return z.preprocess(
     (value) =>
-      typeof value === "string" && value.trim() === "" ? undefined : value,
+      value == null || (typeof value === "string" && value.trim() === "")
+        ? undefined
+        : value,
     z
       .string()
       .trim()
       .max(max, `${label} must be ${max} characters or fewer`)
       .optional()
+  )
+}
+
+/** Required text fields: a missing field is reported as empty, not as `null`. */
+function requiredText(max: number, label: string) {
+  return z.preprocess(
+    (value) => (value == null ? "" : value),
+    z
+      .string()
+      .trim()
+      .min(1, `${label} is required`)
+      .max(max, `${label} must be ${max} characters or fewer`)
   )
 }
 
@@ -30,17 +44,16 @@ export const addressSchema = z.object({
 })
 
 export const customerSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Name is required")
-    .max(120, "Name must be 120 characters or fewer"),
-  email: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .max(254, "Email must be 254 characters or fewer")
-    .pipe(z.email("Enter a valid email address")),
+  name: requiredText(120, "Name"),
+  email: z.preprocess(
+    (value) => (value == null ? "" : value),
+    z
+      .string()
+      .trim()
+      .toLowerCase()
+      .max(254, "Email must be 254 characters or fewer")
+      .pipe(z.email("Enter a valid email address"))
+  ),
   phone: optionalText(30, "Phone"),
   company: optionalText(120, "Company"),
   status: customerStatusSchema,

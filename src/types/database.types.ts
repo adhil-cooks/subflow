@@ -1,10 +1,3 @@
-/**
- * Database contract shared by every feature.
- *
- * NOTE: `@supabase/postgrest-js` requires each table to expose a
- * `Relationships` array. They are currently empty; regenerate this file with
- * `supabase gen types` to populate real foreign-key metadata.
- */
 export type Json =
   | string
   | number
@@ -52,7 +45,15 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'profiles_id_fkey',
+            columns: ['id'],
+            isOneToOne: true,
+            referencedRelation: 'users',
+            referencedColumns: ['id'],
+          },
+        ];
       };
       customers: {
         Row: {
@@ -97,7 +98,22 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'customers_profile_id_fkey',
+            columns: ['profile_id'],
+            isOneToOne: false,
+            referencedRelation: 'profiles',
+            referencedColumns: ['id'],
+          },
+          {
+            foreignKeyName: 'customers_created_by_fkey',
+            columns: ['created_by'],
+            isOneToOne: false,
+            referencedRelation: 'profiles',
+            referencedColumns: ['id'],
+          },
+        ];
       };
       products: {
         Row: {
@@ -130,7 +146,15 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'products_created_by_fkey',
+            columns: ['created_by'],
+            isOneToOne: false,
+            referencedRelation: 'profiles',
+            referencedColumns: ['id'],
+          },
+        ];
       };
       product_variants: {
         Row: {
@@ -166,7 +190,15 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'product_variants_product_id_fkey',
+            columns: ['product_id'],
+            isOneToOne: false,
+            referencedRelation: 'products',
+            referencedColumns: ['id'],
+          },
+        ];
       };
       plans: {
         Row: {
@@ -214,7 +246,22 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'plans_product_id_fkey',
+            columns: ['product_id'],
+            isOneToOne: false,
+            referencedRelation: 'products',
+            referencedColumns: ['id'],
+          },
+          {
+            foreignKeyName: 'plans_created_by_fkey',
+            columns: ['created_by'],
+            isOneToOne: false,
+            referencedRelation: 'profiles',
+            referencedColumns: ['id'],
+          },
+        ];
       };
       plan_items: {
         Row: {
@@ -247,7 +294,22 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'plan_items_plan_id_fkey',
+            columns: ['plan_id'],
+            isOneToOne: false,
+            referencedRelation: 'plans',
+            referencedColumns: ['id'],
+          },
+          {
+            foreignKeyName: 'plan_items_variant_id_fkey',
+            columns: ['variant_id'],
+            isOneToOne: false,
+            referencedRelation: 'product_variants',
+            referencedColumns: ['id'],
+          },
+        ];
       };
       discounts: {
         Row: {
@@ -295,7 +357,15 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'discounts_created_by_fkey',
+            columns: ['created_by'],
+            isOneToOne: false,
+            referencedRelation: 'profiles',
+            referencedColumns: ['id'],
+          },
+        ];
       };
       tax_rates: {
         Row: {
@@ -334,7 +404,15 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'tax_rates_created_by_fkey',
+            columns: ['created_by'],
+            isOneToOne: false,
+            referencedRelation: 'profiles',
+            referencedColumns: ['id'],
+          },
+        ];
       };
     };
     Views: Record<string, never>;
